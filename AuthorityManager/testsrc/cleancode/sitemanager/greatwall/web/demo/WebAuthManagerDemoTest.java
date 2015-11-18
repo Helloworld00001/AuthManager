@@ -1,0 +1,62 @@
+/*
+ *  Copyright (c) 2015 Nokia. All rights reserved.
+ *
+ *  Revision History:
+ *
+ *  DATE/AUTHOR          COMMENT
+ *  ---------------------------------------------------------------------
+ *  2015年11月6日/grelin                            
+ */
+package cleancode.sitemanager.greatwall.web.demo;
+
+import junit.framework.TestCase;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import cleancode.sitemanager.greatwall.web.manager.WebAuthManager;
+
+/**
+ * @author <a HREF="mailto:yourMail@nsn.com">Your Name</a>
+ */
+public class WebAuthManagerDemoTest extends TestCase
+{
+    private WebAuthManagerDemo demo = null;
+
+    private WebAuthManager webAuthManagerInstance = WebAuthManager.getInstance();
+    /**
+     * @throws java.lang.Exception
+     */
+    @Before
+    public void setUp() throws Exception
+    {
+        demo = new WebAuthManagerDemo();
+    }
+
+    /**
+     * @throws java.lang.Exception
+     */
+    @After
+    public void tearDown() throws Exception
+    {
+        webAuthManagerInstance.clear();
+    }
+
+    /**
+     * Test method for {@link cleancode.sitemanager.greatwall.web.demo.WebAuthManagerDemo#testFunctionalitySuit1()}.
+     */
+    @Test
+    public void testFunctionalitySuit1()
+    {
+        demo.functionalitySuit1();
+        assertEquals( 1, webAuthManagerInstance.getUsers().size() );
+    }
+
+    @Test
+    public void testFunctionalitySuit2()
+    {
+        demo.functionalitySuit2();
+        assertEquals( 2, webAuthManagerInstance.getUsers().size() );
+    }
+}
