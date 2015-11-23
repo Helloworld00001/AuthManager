@@ -1,12 +1,3 @@
-/*
- *  Copyright (c) 2015 Nokia. All rights reserved.
- *
- *  Revision History:
- *
- *  DATE/AUTHOR          COMMENT
- *  ---------------------------------------------------------------------
- *  2015年11月6日/grelin                            
- */
 package cleancode.sitemanager.greatwall.manager;
 
 import java.util.LinkedList;
@@ -18,7 +9,7 @@ import cleancode.sitemanager.greatwall.user.AbstractUser;
 /**
  * Abstract Authority Manager. This is the container which hold all users and their roles and operations
  * 
- * @author <a HREF="mailto:yourMail@nsn.com">Your Name</a>
+ * @author <a HREF="mailto:lincc2008520@163.com">Greatwall</a>
  */
 public abstract class AbstractAuthManager
 {

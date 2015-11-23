@@ -1,12 +1,3 @@
-/*
- *  Copyright (c) 2015 Nokia. All rights reserved.
- *
- *  Revision History:
- *
- *  DATE/AUTHOR          COMMENT
- *  ---------------------------------------------------------------------
- *  2015年11月6日/grelin                            
- */
 package cleancode.sitemanager.greatwall.web.demo;
 
 import junit.framework.TestCase;
@@ -18,13 +9,14 @@ import org.junit.Test;
 import cleancode.sitemanager.greatwall.web.manager.WebAuthManager;
 
 /**
- * @author <a HREF="mailto:yourMail@nsn.com">Your Name</a>
+ * @author <a HREF="mailto:lincc2008520@163.com">Greatwall</a>
  */
 public class WebAuthManagerDemoTest extends TestCase
 {
     private WebAuthManagerDemo demo = null;
 
     private WebAuthManager webAuthManagerInstance = WebAuthManager.getInstance();
+
     /**
      * @throws java.lang.Exception
      */

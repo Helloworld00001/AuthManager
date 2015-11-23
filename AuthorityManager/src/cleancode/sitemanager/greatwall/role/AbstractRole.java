@@ -1,12 +1,3 @@
-/*
- *  Copyright (c) 2015 Nokia. All rights reserved.
- *
- *  Revision History:
- *
- *  DATE/AUTHOR          COMMENT
- *  ---------------------------------------------------------------------
- *  2015年11月5日/grelin                            
- */
 package cleancode.sitemanager.greatwall.role;
 
 import java.util.LinkedList;
@@ -17,7 +8,7 @@ import cleancode.sitemanager.greatwall.operation.Operation;
 /**
  * AbstractRole which implements Role interface
  * 
- * @author <a HREF="mailto:yourMail@nsn.com">Your Name</a>
+ * @author <a HREF="mailto:lincc2008520@163.com">Greatwall</a>
  */
 public abstract class AbstractRole implements Role
 {

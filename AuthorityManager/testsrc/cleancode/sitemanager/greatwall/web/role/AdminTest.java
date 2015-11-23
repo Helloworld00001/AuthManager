@@ -1,12 +1,3 @@
-/*
- *  Copyright (c) 2015 Nokia. All rights reserved.
- *
- *  Revision History:
- *
- *  DATE/AUTHOR          COMMENT
- *  ---------------------------------------------------------------------
- *  2015年11月7日/grelin                            
- */
 package cleancode.sitemanager.greatwall.web.role;
 
 import junit.framework.TestCase;
@@ -18,13 +9,13 @@ import org.junit.Test;
 import cleancode.sitemanager.greatwall.web.operation.WebOperations;
 
 /**
- * @author <a HREF="mailto:yourMail@nsn.com">Your Name</a>
- *
+ * @author <a HREF="mailto:lincc2008520@163.com">Greatwall</a>
  */
 public class AdminTest extends TestCase
 {
 
     private Admin admin = null;
+
     /**
      * @throws java.lang.Exception
      */
