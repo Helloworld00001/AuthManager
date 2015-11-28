@@ -57,7 +57,7 @@ public class WebAuthManagerDemo
         PrinterUtil.printAllUsersInformation( webAuthManagerInstance.getUsers() );
 
         webAuthManagerInstance.updateUserName( user, "Paul" );
-        PrinterUtil.printCommandString( "Update User '" + user + "' name to 'Paul'" );
+        PrinterUtil.printCommandString( "Update User 'Terry' name to 'Paul'" );
         PrinterUtil.printAllUsersInformation( webAuthManagerInstance.getUsers() );
     }
 
