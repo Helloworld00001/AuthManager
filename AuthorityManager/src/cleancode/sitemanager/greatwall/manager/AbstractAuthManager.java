@@ -19,13 +19,13 @@ import cleancode.sitemanager.greatwall.user.AbstractUser;
  */
 public abstract class AbstractAuthManager
 {
-    private static final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-
-    protected static final WriteLock writeLock = readWriteLock.writeLock();
-
-    protected static final ReadLock readLock = readWriteLock.readLock();
+    private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
     private Map<Long, AbstractUser> usersContainer = new ConcurrentHashMap<Long, AbstractUser>();
+
+    protected final WriteLock writeLock = readWriteLock.writeLock();
+
+    protected final ReadLock readLock = readWriteLock.readLock();
 
     public List<AbstractUser> getUsers()
     {

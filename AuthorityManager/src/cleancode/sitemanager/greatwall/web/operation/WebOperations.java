@@ -16,6 +16,5 @@ public class WebOperations extends CommonOperations
 
     private WebOperations()
     {
-
     }
 }

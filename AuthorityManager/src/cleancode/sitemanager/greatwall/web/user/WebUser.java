@@ -16,11 +16,11 @@ import cleancode.sitemanager.greatwall.user.AbstractUser;
  */
 public class WebUser extends AbstractUser
 {
-    private static final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-    private static final WriteLock writeLock = readWriteLock.writeLock();
+    private final WriteLock writeLock = readWriteLock.writeLock();
 
-    private static final ReadLock readLock = readWriteLock.readLock();
+    private final ReadLock readLock = readWriteLock.readLock();
 
     private List<Role> myRoles = new LinkedList<Role>();
 

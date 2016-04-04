@@ -17,7 +17,7 @@ public abstract class AbstractRole implements Role
 
     private List<Operation> operations = new LinkedList<Operation>();
 
-    private static final ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
 
     public AbstractRole( String roleName )
     {
