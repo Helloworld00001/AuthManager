@@ -12,55 +12,12 @@ public class CommonOperations
     {
     }
 
-    public static Operation VIEW = new View();
+    public static Operation VIEW = ( ) -> "View";
 
-    public static Operation ADD = new Add();
+    public static Operation ADD = ( ) -> "Add";
 
-    public static Operation DELETE = new Delete();
+    public static Operation DELETE = ( ) -> "Delete";
 
-    public static Operation UPDATE = new Update();
+    public static Operation UPDATE = ( ) -> "Update";
 
-    private static class View implements Operation
-    {
-
-        @Override
-        public String operate()
-        {
-            return "View";
-        }
-
-    }
-
-    private static class Add implements Operation
-    {
-
-        @Override
-        public String operate()
-        {
-            return "Add";
-        }
-
-    }
-
-    private static class Delete implements Operation
-    {
-
-        @Override
-        public String operate()
-        {
-            return "Delete";
-        }
-
-    }
-
-    private static class Update implements Operation
-    {
-
-        @Override
-        public String operate()
-        {
-            return "Update";
-        }
-
-    }
 }

@@ -1,5 +1,7 @@
 package cleancode.sitemanager.greatwall.web.manager;
 
+import java.util.Optional;
+
 import junit.framework.TestCase;
 
 import org.junit.After;
@@ -72,7 +74,16 @@ public class WebAuthManagerTest extends TestCase
         assertEquals( 1, instance.getUsers().size() );
         instance.deleteUser( "test" );
         assertEquals( 0, instance.getUsers().size() );
+    }
 
+    @Test
+    public void testDeleteUserByUserId()
+    {
+        instance.createUser( "test", ( long ) 10086 );
+        instance.deleteUser( ( long ) 10087 );
+        assertEquals( 1, instance.getUsers().size() );
+        instance.deleteUser( ( long ) 10086 );
+        assertEquals( 0, instance.getUsers().size() );
     }
 
     /**
@@ -200,9 +211,19 @@ public class WebAuthManagerTest extends TestCase
         AbstractUser user1 = instance.createUser( "test1" );
         AbstractUser user2 = instance.createUser( "test2" );
 
-        assertEquals( null, instance.getUser( "test" ) );
-        assertEquals( user1, instance.getUser( "test1" ) );
-        assertEquals( user2, instance.getUser( "test2" ) );
+        assertTrue( instance.getOptionalUsersByName( "test" ).isEmpty() );
+        assertTrue( !instance.getOptionalUsersByName( "test1" ).isEmpty() );
+        assertTrue( !instance.getOptionalUsersByName( "test2" ).isEmpty() );
+    }
+
+    @Test
+    public void testGetOptionalUser()
+    {
+        AbstractUser user1 = instance.createUser( "test1", ( long ) 10086 );
+        AbstractUser user2 = instance.createUser( "test2", ( long ) 10087 );
+
+        assertEquals( Optional.empty(), instance.getOptionalUser( ( long ) 10088 ) );
+        assertEquals( user2, instance.getOptionalUser( ( long ) 10087 ).get() );
     }
 
     /**

@@ -1,6 +1,7 @@
 package cleancode.sitemanager.greatwall.util;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import cleancode.sitemanager.greatwall.operation.Operation;
 import cleancode.sitemanager.greatwall.user.AbstractUser;
@@ -14,19 +15,13 @@ public class PrinterUtil
 {
     public static String getOperationListString( List<Operation> operationList )
     {
-        if( operationList.isEmpty() )
+        if( operationList == null || operationList.isEmpty() )
         {
             return "[]";
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append( "[" );
-        for( Operation operation : operationList )
-        {
-            sb.append( operation.operate() ).append( ", " );
-        }
-        sb.delete( sb.length() - 2, sb.length() );
-        sb.append( "]" );
-        return sb.toString().trim();
+
+        return "[" +
+            operationList.stream().map( operation -> operation.operate() ).collect( Collectors.joining( ", " ) ) + "]";
     }
 
     public static void printAllUsersInformation( List<AbstractUser> usersList )

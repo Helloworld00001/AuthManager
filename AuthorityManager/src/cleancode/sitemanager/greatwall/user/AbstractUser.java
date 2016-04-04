@@ -12,11 +12,25 @@ import cleancode.sitemanager.greatwall.role.Role;
  */
 public abstract class AbstractUser
 {
+    private Long myUserId;
+
     private String myName;
 
-    public AbstractUser( String name )
+    public AbstractUser( String name, Long id )
     {
         myName = name;
+        myUserId = id;
+    }
+
+    /**
+     * It is better to init instance by AbstractUser(name, id), because the default userid is the user name's hashCode.
+     * Different name can be same hashCode as userId, result to incorrect index in Collection framework
+     * 
+     * @param name
+     */
+    public AbstractUser( String name )
+    {
+        this( name, Long.valueOf( name.hashCode() ) );
     }
 
     public String getName()
@@ -27,6 +41,11 @@ public abstract class AbstractUser
     public void setName( String name )
     {
         myName = name;
+    }
+
+    public Long getUseId()
+    {
+        return myUserId;
     }
 
     public abstract boolean setRole( Role role );
@@ -49,16 +68,15 @@ public abstract class AbstractUser
         if( obj instanceof AbstractUser )
         {
             AbstractUser abstractUser = ( AbstractUser ) obj;
-            return abstractUser.getName().equals( this.getName() );
+            return abstractUser.getUseId().equals( this.getUseId() );
         }
         return false;
-
     }
 
     @Override
     public int hashCode()
     {
-        return getName().hashCode();
+        return getUseId().hashCode();
     }
 
     @Override

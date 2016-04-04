@@ -1,7 +1,13 @@
 package cleancode.sitemanager.greatwall.manager;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import java.util.stream.Collectors;
 
 import cleancode.sitemanager.greatwall.operation.Operation;
 import cleancode.sitemanager.greatwall.user.AbstractUser;
@@ -13,47 +19,84 @@ import cleancode.sitemanager.greatwall.user.AbstractUser;
  */
 public abstract class AbstractAuthManager
 {
-    private List<AbstractUser> usersList = new LinkedList<AbstractUser>();
+    private static final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
+    protected static final WriteLock writeLock = readWriteLock.writeLock();
+
+    protected static final ReadLock readLock = readWriteLock.readLock();
+
+    private Map<Long, AbstractUser> usersContainer = new ConcurrentHashMap<Long, AbstractUser>();
 
     public List<AbstractUser> getUsers()
     {
-        return usersList;
+        readLock.lock();
+        try
+        {
+            return usersContainer.values().stream().collect( Collectors.toList() );
+        }
+        finally
+        {
+            readLock.unlock();
+        }
     }
 
-    public AbstractUser getUser( String userName )
+    public List<AbstractUser> getOptionalUsersByName( String userName )
     {
-        for( int i = usersList.size() - 1; i >= 0; i-- )
+        readLock.lock();
+        try
         {
-            if( usersList.get( i ).getName().equals( userName ) )
-            {
-                return usersList.get( i );
-            }
+            return usersContainer.values().stream().filter( user -> user != null && user.getName().equals( userName ) ).collect(
+                Collectors.toList() );
+        }
+        finally
+        {
+            readLock.unlock();
         }
 
-        return null;
+    }
+
+    public Optional<AbstractUser> getOptionalUser( Long userId )
+    {
+        return Optional.ofNullable( usersContainer.get( userId ) );
     }
 
     public boolean addUser( AbstractUser user )
     {
-        if( !usersList.contains( user ) )
-        {
-            return usersList.add( user );
-        }
-        return false;
+        return usersContainer.putIfAbsent( user.getUseId(), user ) == null;
     }
     
     public boolean deleteUser( String userName )
     {
-        for( int i = usersList.size() - 1; i >= 0; i-- )
+        writeLock.lock();
+        try
         {
-            if( usersList.get( i ).getName().equals( userName ) )
-            {
-                usersList.remove( i );
-                return true;
-            }
-        }
+            getOptionalUsersByName( userName ).stream().forEach( user -> {
+                usersContainer.remove( user.getUseId() );
+            } );
 
-        return false;
+            return true;
+        }
+        finally
+        {
+            writeLock.unlock();
+        }
+    }
+
+    public boolean deleteUser( Long userId )
+    {
+        writeLock.lock();
+        try
+        {
+            getOptionalUser( userId ).ifPresent( user -> {
+                usersContainer.remove( user.getUseId() );
+            } );
+
+            return true;
+        }
+        finally
+        {
+            writeLock.unlock();
+        }
     }
 
     public boolean canUserExecuteOperation( AbstractUser user, Operation operation )
@@ -62,10 +105,10 @@ public abstract class AbstractAuthManager
     }
 
     /**
-     * Clear all the users and their role, operations in the framework
+     * Clear all the users and their roles, operations in the framework
      */
     public void clear()
     {
-        usersList.clear();
+        usersContainer.clear();
     }
 }

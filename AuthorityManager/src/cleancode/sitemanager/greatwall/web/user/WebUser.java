@@ -1,10 +1,11 @@
 package cleancode.sitemanager.greatwall.web.user;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import java.util.stream.Collectors;
 
 import cleancode.sitemanager.greatwall.operation.Operation;
 import cleancode.sitemanager.greatwall.role.Role;
@@ -15,84 +16,100 @@ import cleancode.sitemanager.greatwall.user.AbstractUser;
  */
 public class WebUser extends AbstractUser
 {
+    private static final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+
+    private static final WriteLock writeLock = readWriteLock.writeLock();
+
+    private static final ReadLock readLock = readWriteLock.readLock();
+
     private List<Role> myRoles = new LinkedList<Role>();
 
-    /**
-     * @param name
-     */
     public WebUser( String name )
     {
         super( name );
     }
 
-    /**
-     * @param myRole
-     * @see cleancode.sitemanager.greatwall.user.AbstractUser#setRole(cleancode.sitemanager.greatwall.role.Role)
-     */
+    public WebUser( String name, Long id )
+    {
+        super( name, id );
+    }
+
     @Override
     public boolean setRole( Role role )
     {
-        if( myRoles.contains( role ) )
+        writeLock.lock();
+        try
         {
-            myRoles.set( myRoles.indexOf( role ), role );
-        }
-        else
-        {
-            myRoles.add( role );
-        }
+            if( myRoles.contains( role ) )
+            {
+                myRoles.set( myRoles.indexOf( role ), role );
+            }
+            else
+            {
+                myRoles.add( role );
+            }
 
-        return true;
+            return true;
+        }
+        finally
+        {
+            writeLock.unlock();
+        }
     }
 
-    /**
-     * @return
-     * @see cleancode.sitemanager.greatwall.user.AbstractUser#getRoles()
-     */
     @Override
     public List<Role> getRoles()
     {
-        return myRoles;
+        readLock.lock();
+        try
+        {
+            return myRoles;
+        }
+        finally
+        {
+            readLock.unlock();
+        }
     }
 
-    /**
-     * @param role
-     * @return
-     * @see cleancode.sitemanager.greatwall.user.AbstractUser#revokeRole(cleancode.sitemanager.greatwall.role.Role)
-     */
     @Override
     public boolean revokeRole( Role role )
     {
-        if( myRoles.contains( role ) )
+        writeLock.lock();
+        try
         {
-            return myRoles.remove( role );
-        }
+            if( myRoles.contains( role ) )
+            {
+                return myRoles.remove( role );
+            }
 
-        return false;
+            return false;
+        }
+        finally
+        {
+            writeLock.unlock();
+        }
     }
 
-    /**
-     * @return
-     * @see cleancode.sitemanager.greatwall.user.AbstractUser#getOperations()
-     */
     @Override
     public List<Operation> getOperations()
     {
-        Set<Operation> operationSet = new HashSet<Operation>();
-        for( Role role : myRoles )
+        readLock.lock();
+        try
         {
-            operationSet.addAll( role.getOperations() );
+            return myRoles.stream().flatMap( role -> role.getOperations().stream() ).distinct().collect(
+                Collectors.toList() );
         }
-        return new ArrayList<Operation>( operationSet );
+        finally
+        {
+            readLock.unlock();
+        }
+
     }
 
-    /**
-     * @return
-     * @see cleancode.sitemanager.greatwall.user.AbstractUser#canOperate()
-     */
     @Override
     public boolean canOperate( Operation operation )
     {
-        return getOperations().contains( operation );
+        return getOperations().stream().anyMatch( ele -> ele == operation );
     }
 
 }

@@ -106,10 +106,12 @@ public class WebAuthManagerDemo
             superAdminRole + "'" );
         PrinterUtil.printAllUsersInformation( webAuthManagerInstance.getUsers() );
 
-        PrinterUtil.printUserExistInFramework( user, webAuthManagerInstance.getUser( userName1 ) != null );
+        PrinterUtil.printUserExistInFramework( user,
+            webAuthManagerInstance.getOptionalUsersByName( userName1 ).isEmpty() );
         webAuthManagerInstance.deleteUser( userName1 );
         PrinterUtil.printCommandString( "Delete User '" + userName1 + "'" );
-        PrinterUtil.printUserExistInFramework( user, webAuthManagerInstance.getUser( userName1 ) != null );
+        PrinterUtil.printUserExistInFramework( user,
+            webAuthManagerInstance.getOptionalUsersByName( userName1 ).isEmpty() );
         PrinterUtil.printAllUsersInformation( webAuthManagerInstance.getUsers() );
 
         PrinterUtil.printCanUserExecuteOperation( user2, WebOperations.GET );

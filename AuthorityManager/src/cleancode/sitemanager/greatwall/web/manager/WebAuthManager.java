@@ -14,7 +14,7 @@ import cleancode.sitemanager.greatwall.web.role.SuperAdmin;
 import cleancode.sitemanager.greatwall.web.user.WebUser;
 
 /**
- * Web Authority Manager which handle Web-based system authority management
+ * Web Authority Manager which handle Web-based system authority
  * 
  * @author <a HREF="mailto:lincc2008520@163.com">Greatwall</a>
  */
@@ -30,6 +30,13 @@ public class WebAuthManager extends AbstractAuthManager
     public static WebAuthManager getInstance()
     {
         return instance;
+    }
+
+    public AbstractUser createUser( String userName, Long userId )
+    {
+        AbstractUser user = new WebUser( userName, userId );
+        addUser( user );
+        return user;
     }
 
     public AbstractUser createUser( String userName )

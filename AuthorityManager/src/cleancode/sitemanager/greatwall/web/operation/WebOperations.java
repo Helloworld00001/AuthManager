@@ -10,33 +10,12 @@ import cleancode.sitemanager.greatwall.operation.Operation;
  */
 public class WebOperations extends CommonOperations
 {
-    public static Operation GET = new Get();
+    public static Operation GET = ( ) -> "Get";
 
-    public static Operation POST = new Post();
+    public static Operation POST = ( ) -> "Post";
 
     private WebOperations()
     {
-
-    }
-
-    private static class Get implements Operation
-    {
-        @Override
-        public String operate()
-        {
-            return "Get";
-        }
-
-    }
-
-    private static class Post implements Operation
-    {
-
-        @Override
-        public String operate()
-        {
-            return "Post";
-        }
 
     }
 }
